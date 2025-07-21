@@ -32,6 +32,145 @@
         
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-logo {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+        }
+        
+        .loading-logo-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--primary);
+            animation: spin 1.5s linear infinite;
+        }
+        
+        .loading-logo-inner::before,
+        .loading-logo-inner::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+        }
+        
+        .loading-logo-inner::before {
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-top-color: #8b5cf6;
+            animation: spin 2s linear infinite reverse;
+        }
+        
+        .loading-logo-inner::after {
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            border-top-color: #6366f1;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #8b5cf6, #6366f1, #3b82f6, #8b5cf6);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: gradient 3s linear infinite, pulse 2s ease-in-out infinite alternate;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .loading-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #6366f1, transparent);
+            border-radius: 100%;
+            filter: blur(1px);
+        }
+        
+        .loading-subtext {
+            color: #94a3b8;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            text-align: center;
+            max-width: 500px;
+            opacity: 0.8;
+        }
+        
+        .progress-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #8b5cf6, #6366f1);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        
         body {
             background-color: var(--darker);
             color: var(--light);
@@ -506,6 +645,19 @@
                 align-items: flex-start;
                 gap: 0.5rem;
             }
+            
+            .loading-text {
+                font-size: 2.5rem;
+            }
+            
+            .loading-subtext {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .progress-bar {
+                width: 250px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -530,10 +682,34 @@
             .product-image {
                 height: 238px;
             }
+            
+            .loading-text {
+                font-size: 2rem;
+            }
+            
+            .loading-subtext {
+                font-size: 0.9rem;
+            }
+            
+            .progress-bar {
+                width: 200px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">
+            <div class="loading-logo-inner"></div>
+        </div>
+        <div class="loading-text">JOJO HOSTING</div>
+        <div class="loading-subtext">Premium Pterodactyl Panel Hosting Solutions</div>
+        <div class="progress-bar">
+            <div class="progress" id="loadingProgress"></div>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <a href="#" class="logo">
@@ -789,7 +965,7 @@
                     <li><i class="fas fa-infinity"></i> Unlimited Resources</li>
                     <li><i class="fas fa-key"></i> Root Access</li>
                 </ul>
-                <a href="#" class="btn btn-whatsapp order-btn" data-product="OWNER Panel Pterodactyl" data-price="Rp 8.000">
+                <a href="#" class="btn btn-whatsapp order-btn" data-product="OWNER Panel Pterodactyl" data-price="Rp 22.000">
                     <i class="fab fa-whatsapp"></i> Order Via WhatsApp
                 </a>
             </div>
@@ -801,6 +977,7 @@
             <div class="orders-list" id="orders-list">
                 <!-- Orders will be dynamically inserted here -->
                 <div class="no-orders">No orders yet. Your orders will appear here after you place them.</div>
+            </div>
         
         <footer>
             <p>&copy; 2025 JOJOSHOP Pterodactyl Panel Hosting. All rights reserved.</p>
@@ -813,8 +990,27 @@
     </a>
     
     <script>
-        // WhatsApp Auto Order Functionality with Order History
+        // Loading Screen Animation
         document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            // Simulate loading progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                loadingProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadingScreen.classList.add('hidden');
+                    }, 500);
+                }
+            }, 200);
+            
+            // WhatsApp Auto Order Functionality with Order History
             const whatsappNumber = '6283161207895';
             const orderButtons = document.querySelectorAll('.order-btn');
             const floatButton = document.getElementById('whatsapp-float');
